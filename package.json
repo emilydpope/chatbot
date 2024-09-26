@@ -26,7 +26,8 @@
     "scripts:materializeScrubbedMessagesStats:latest": "lerna run --scope='scripts' materializeScrubbedMessagesStats:latest",
     "server:start": "lerna run start --scope='chatbot-server-mongodb-public'",
     "eval:conversationQualityCheckPipeline": "lerna run pipeline:conversationQualityCheck --scope='chatbot-eval-mongodb-public'",
-    "core-star": "lerna add mongodb-rag-core --scope='mongodb-chatbot-ui'",
+    "core-star": "lerna add mongodb-rag-core@* --scope='mongodb-chatbot-ui'",
+    "lerna-v": "lerna link",
     "eval:faqConversationQualityCheckPipeline": "lerna run pipeline:faqConversationQualityCheck --scope='chatbot-eval-mongodb-public'"
   },
   "devDependencies": {
