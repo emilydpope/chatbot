@@ -1,5 +1,8 @@
 import { References } from "mongodb-rag-core";
-import { makePrioritizeReferenceDomain } from "./sortReferences";
+import {
+  makePrioritizeReferenceDomain,
+  normalizedHostname,
+} from "./sortReferences";
 
 const testReferences = [
   {
@@ -94,5 +97,17 @@ describe("makePrioritizeReferenceDomain", () => {
       "https://www.example.com",
       "https://www.example123.com",
     ]);
+  });
+});
+
+describe("normalizedHostname", () => {
+  it("removes the www. prefix from a URL's hostname", () => {
+    const url = new URL("https://www.mongodb.com");
+    expect(normalizedHostname(url)).toBe("mongodb.com");
+  });
+
+  it("does not modify a URL's hostname if it does not start with www.", () => {
+    const url = new URL("https://www2.mongodb.com");
+    expect(normalizedHostname(url)).toBe("www2.mongodb.com");
   });
 });

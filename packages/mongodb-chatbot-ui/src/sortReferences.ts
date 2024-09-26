@@ -16,20 +16,21 @@ export function makePrioritizeReferenceDomain(
     return () => 0;
   }
 
-  return (l, r) => {
+  return function prioritizeReferenceDomain(l, r) {
     const lUrl = new URL(l.url);
     const rUrl = new URL(r.url);
 
     // Determine the priority level for left and right URLs
-    const lPriority = priorityDomains.findIndex(
-      (priorityDomain) =>
-        lUrl.hostname === priorityDomain.hostname &&
+    const lPriority = priorityDomains.findIndex((priorityDomain) => {
+      return (
+        normalizedHostname(lUrl) === normalizedHostname(priorityDomain) &&
         lUrl.pathname.startsWith(priorityDomain.pathname)
-    );
+      );
+    });
 
     const rPriority = priorityDomains.findIndex(
       (priorityDomain) =>
-        rUrl.hostname === priorityDomain.hostname &&
+        normalizedHostname(rUrl) === normalizedHostname(priorityDomain) &&
         rUrl.pathname.startsWith(priorityDomain.pathname)
     );
 
@@ -50,4 +51,11 @@ export function makePrioritizeReferenceDomain(
     // Neither URL matches any priority domain
     return 0;
   };
+}
+
+/**
+ * Get the hostname of a URL, normalized to omit the "www." prefix if it is present
+ */
+export function normalizedHostname(url: URL): string {
+  return url.hostname.replace(/^www\./, "");
 }
