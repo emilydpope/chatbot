@@ -1,4 +1,5 @@
-import { makePrioritizeReferenceDomain, References } from "./References";
+import { References } from "mongodb-rag-core";
+import { makePrioritizeReferenceDomain } from "./sortReferences";
 
 const testReferences = [
   {
@@ -42,7 +43,9 @@ describe("makePrioritizeReferenceDomain", () => {
     const prioritizeReferenceDomain = makePrioritizeReferenceDomain(
       "https://mongodb.com"
     );
-    const sortedReferences = testReferences.toSorted(prioritizeReferenceDomain);
+    const sortedReferences = [...testReferences].sort(
+      prioritizeReferenceDomain
+    );
     expect(sortedReferences.map((r) => r.url)).toEqual([
       "https://mongodb.com/developer/products/atlas/foobar",
       "https://mongodb.com/docs/manual",
@@ -56,7 +59,9 @@ describe("makePrioritizeReferenceDomain", () => {
     const prioritizeReferenceDomain = makePrioritizeReferenceDomain(
       new URL("https://mongodb.com/docs")
     );
-    const sortedReferences = testReferences.toSorted(prioritizeReferenceDomain);
+    const sortedReferences = [...testReferences].sort(
+      prioritizeReferenceDomain
+    );
     expect(sortedReferences.map((r) => r.url)).toEqual([
       "https://mongodb.com/docs/manual",
       "https://mongodb.com/docs/atlas",
@@ -79,7 +84,9 @@ describe("makePrioritizeReferenceDomain", () => {
       "https://mongodb.com/docs",
       "https://www.example.com",
     ]);
-    const sortedReferences = testReferences.toSorted(prioritizeReferenceDomain);
+    const sortedReferences = [...testReferences].sort(
+      prioritizeReferenceDomain
+    );
     expect(sortedReferences.map((r) => r.url)).toEqual([
       "https://mongodb.com/docs/atlas",
       "https://mongodb.com/developer/products/atlas/foobar",
