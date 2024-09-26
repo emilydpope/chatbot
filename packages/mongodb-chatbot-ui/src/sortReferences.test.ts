@@ -1,5 +1,6 @@
 import { References } from "mongodb-rag-core";
 import {
+  isReferenceToDomain,
   makePrioritizeReferenceDomain,
   normalizedHostname,
 } from "./sortReferences";
@@ -109,5 +110,21 @@ describe("normalizedHostname", () => {
   it("does not modify a URL's hostname if it does not start with www.", () => {
     const url = new URL("https://www2.mongodb.com");
     expect(normalizedHostname(url)).toBe("www2.mongodb.com");
+  });
+});
+
+describe("isReferenceToDomain", () => {
+  it("returns true if the reference's URL matches the given domain", () => {
+    const reference = testReferences[0];
+    expect(isReferenceToDomain(reference, new URL("https://mongodb.com"))).toBe(
+      true
+    );
+  });
+
+  it("returns false if the reference's URL does not match the given domain", () => {
+    const reference = testReferences[0];
+    expect(
+      isReferenceToDomain(reference, new URL("https://www.example.com"))
+    ).toBe(false);
   });
 });

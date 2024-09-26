@@ -2,6 +2,7 @@ import { isRichLinkVariantName, type RichLinkProps } from "@lg-chat/rich-links";
 import { References } from "mongodb-rag-core";
 import {
   makePrioritizeReferenceDomain,
+  normalizedHostname,
   SortReferences,
 } from "./sortReferences";
 import { addQueryParams, getCurrentPageUrl } from "./utils";
@@ -55,8 +56,11 @@ export function makePrioritizeCurrentMongoDbReferenceDomain(): SortReferences {
     new URL("https://mongodb.com"),
     new URL("https://www.mongodb.com"),
   ];
-  const applicableDomains = prioritizableDomains.filter((domain) =>
-    currentDomain.href.startsWith(domain.href)
+  const applicableDomains = prioritizableDomains.filter(
+    (prioritizableDomain) =>
+      normalizedHostname(currentDomain) ===
+        normalizedHostname(prioritizableDomain) &&
+      currentDomain.pathname.startsWith(prioritizableDomain.pathname)
   );
   return makePrioritizeReferenceDomain(applicableDomains);
 }
